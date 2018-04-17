@@ -1,5 +1,5 @@
 import { EventEmitter } from '@angular/core';
-import { connect, ISubscriptionGrant } from 'mqtt';
+import { connect, ISubscriptionGrant } from './mqtt';
 import * as extend from 'xtend';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -141,7 +141,7 @@ export class MqttService {
           // refcount is decreased on unsubscribe.
           () => {
             const subscription: Subscription = new Subscription();
-            this.client.subscribe(filterString, (err, granted: ISubscriptionGrant[]) => {
+            this.client.subscribe(filterString, null, (err, granted: ISubscriptionGrant[]) => {
               granted.forEach((granted_: ISubscriptionGrant) => {
                 if (granted_.qos === 128) {
                   delete this.observables[granted_.topic];
