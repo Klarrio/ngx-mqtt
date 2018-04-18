@@ -3,16 +3,16 @@
 /**
  * Module dependencies
  */
-import * as events from 'events';
 import { Store } from './store';
-import * as eos from 'end-of-stream';
-import * as mqttPacket from 'mqtt-packet';
 import { Writable } from 'readable-stream';
-import * as reInterval from 'reinterval';
 import { validateTopics } from './validations';
-import * as xtend from 'xtend';
-
 import { Packet, QoS, IPacket, IUnsubscribePacket } from './types';
+
+const events = require('events');
+const eos = require('end-of-stream');
+const mqttPacket = require('mqtt-packet');
+const reInterval = require('reinterval');
+const extend = require('extend');
 
 export interface IClientOptions extends ISecureClientOptions {
   port?: number; // port is made into a number subsequently
