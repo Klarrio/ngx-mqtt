@@ -135,14 +135,16 @@ export class MqttService {
         () => {
           const subscription: Subscription = new Subscription();
           this.client.subscribe(filter, (err, granted: MQTT.ISubscriptionGrant[]) => {
-            granted.forEach((granted_: MQTT.ISubscriptionGrant) => {
-              if (granted_.qos === 128) {
-                delete this.observables[granted_.topic];
-                this.client.unsubscribe(granted_.topic);
-                rejected.error(`subscription for '${granted_.topic}' rejected!`);
-              }
-              this._onSuback.emit({filter: filter, granted: granted_.qos !== 128});
-            });
+            if(granted) {
+                granted.forEach((granted_: MQTT.ISubscriptionGrant) => {
+                    if (granted_.qos === 128) {
+                        delete this.observables[granted_.topic];
+                        this.client.unsubscribe(granted_.topic);
+                        rejected.error(`subscription for '${granted_.topic}' rejected!`);
+                    }
+                    this._onSuback.emit({filter: filter, granted: granted_.qos !== 128});
+                });
+            }
           });
           subscription.add(() => {
             delete this.observables[filter];
